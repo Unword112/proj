@@ -1,18 +1,14 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
-
-export class ProfileScreen extends Component {
+export default class NotificationScreen extends Component {
     render() {
         return (
-            <View>
-                <Text> Profile Screen </Text>
+            <View style={styles.container}>
+                <Text> Notification Screen </Text>
             </View>
         )
     }
 }
-
-export default ProfileScreen
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -20,4 +16,3 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     }
 })
-

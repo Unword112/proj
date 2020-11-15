@@ -1,126 +1,97 @@
-import React, { Component } from 'react'
-import { Text, View , StyleSheet, TextInput, TouchableOpacity, Image, StatusBar } from 'react-native'
+import React, { Component } from 'react';
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
-import * as firebasse from 'firebase'
-
-export default class RegisterScreen extends React.Component {
-    
+import * as firebase from 'firebase';
+export default class RegisterScreen extends Component {
     static navigationOptions = {
         header: null
-    };
-
+    }
     state = {
-        name: "",
-        email: "",
-        password: "",
-        errorMassage: null
+        name: '',
+        email: '',
+        password: '',
+        errorMessage: null
     };
-        
     handleSignup = () => {
         firebase
-            .auth
-            .createUserWithEmailAndPassword(this.state.email , this.state.password)
-            .then (userCredentials => {
+            .auth()
+            .createUserWithEmailAndPassword(this.state.email, this.state.password)
+            .then(userCredentials => {
                 return userCredentials.user.updateProfile({
                     displayName: this.state.name
-                });
+                })
             })
-            .catch(error => this.setState ({ errorMassage: error.massage }));
-    }
+            .catch(error => this.state({ errorMessage: error.message }))
+    };
     render() {
         return (
             <View style={styles.container}>
-                
                 <StatusBar barStyle="light-content"></StatusBar>
-
-                <Image 
-                    source={require("../assets/authHeader.png")}
-                    styel={{ marginTop: -116 , marginLeft: -59 }}
-                >    
-                </Image>
-
-                <Image 
-                    source = {require("../assets/authFooter.png")}
-                    style = {{ position: "absolute", bottom: -325, right: -225 }}
+                <Image source={require("../assets/authHeader.jpg")}
+                    style={{ marginTop: -11, marginLeft: -50 }}
                 >
                 </Image>
-
-                <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.goBack}>
+                <Image source={require("../assets/authFooter.jpg")}
+                    style={{ position: "absolute", bottom: 0, right: 0 }}
+                >
+                </Image>
+                <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.goBack()}>
                     <Ionicons name="ios-arrow-round-back" size={32} color="#F0F"></Ionicons>
                 </TouchableOpacity>
-
-                <View style={{ position: "absolute" , top: 64 , alignItems: "center" , width: "100%"}}>
-                    <Text style={styles.greeting}>{'Hello\n Sign up to get Start.'}</Text>
+                <View style={{ position: "absolute", top: 64, alignItems: "center", width: "100%" }}>
+                    <Text style={styles.greeting}> {`Hello!!\n Sign up to get started.`} </Text>
                     <TouchableOpacity style={styles.avatar}>
-                        <Ionicons name="ios-add" 
-                        size = {48} 
-                        color="FFF" 
-                        style= {{marginTop: 6 , marginLeft: 2}}></Ionicons>
+                        <Ionicons name="ios-add" size={40} color="#FFF" style={{ marginTop: 6, marginLeft: 2 }}></Ionicons>
                     </TouchableOpacity>
                 </View>
-
-                <View style={{ position: "absolute" , top: 64 , alignItems: "center", width: "100%"}}>
-
-                <TouchableOpacity style={styles.avatar}>
-                    <Ionicons name="ios-add" size={40} color="#FFF" style={{ marginTop: 6, marginLeft: 2}}></Ionicons>
-                </TouchableOpacity>
-
-                <View style={styles.errorMassage}>
-                    {this.state.errorMassage && <Text style={state.error}>{this.State.errorMassage}</Text>}
+                <View style={styles.errorMessage}>
+                    {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
                 </View>
-
                 <View style={styles.form}>
-
                     <View>
-                        <Text style={styles.InputTitle}>Full name</Text>
+                        <Text style={styles.inputTitle}>Full Name</Text>
                         <TextInput
                             style={styles.input}
                             autoCapitalize="none"
-                            onChangeText ={name => this.setState({ name })}
+                            onChangeText={name => this.setState({ name })}
                             value={this.state.name}
                         ></TextInput>
                     </View>
-
                     <View style={{ marginTop: 32 }}>
-                        <Text style={styles.InputTitle}>Email Address</Text>
+                        <Text style={styles.inputTitle}>Email Address</Text>
                         <TextInput
                             style={styles.input}
                             autoCapitalize="none"
-                            onChangeText ={email => this.setState({ email })}
+                            onChangeText={email => this.setState({ email })}
                             value={this.state.email}
                         ></TextInput>
                     </View>
-
-                    <View style={{marginTop: 32 }}>
-                        <Text style={styles.InputTitle}>password</Text>
+                    <View style={{ marginTop: 32 }}>
+                        <Text style={styles.inputTitle}>Password</Text>
                         <TextInput
                             style={styles.input}
+                            secureTextEntry
                             autoCapitalize="none"
                             onChangeText={password => this.setState({ password })}
                             value={this.state.password}
                         ></TextInput>
                     </View>
                 </View>
-
-                <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
-                    <Text style={{ color: "#FFF" , fontWeight: "500"}}>Sign un</Text>
+                <TouchableOpacity style={styles.button} onPress={this.handleSignup}>
+                    <Text style={{ color: "#FFF", fontWeight: "500" }}>Sign up</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity 
-                        style={{ alignSelf: "center", marginTop: 32}}
-                        onPress={() => this.props.navigation.navigation("Login")}>
-                    <Text style={{ color: "#414959", fontSize: 13}}>
-                        You already have? <Text style={{ fontWeight: "500", color: "#E9446A"}}> Login </Text>
+                <TouchableOpacity
+                    style={{ alignSelf: "center", marginTop: 32 }}
+                    onPress={() => this.props.navigation.navigate("Login")}
+                >
+                    <Text style={{ color: "#414959", fontSize: 13 }}>
+                    Already accout? <Text style={{ fontWeight: "500", color: "#E9446A" }}> Login </Text> here
                     </Text>
                 </TouchableOpacity>
-
-                </View>
             </View>
         )
     }
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1
@@ -132,10 +103,10 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: "#FFF"
     },
-    errorMassage: {
+    errorMessage: {
         height: 72,
         alignItems: "center",
-        jsutifycontent: "center",
+        justifyContent: "center",
         marginHorizontal: 30
     },
     error: {
@@ -148,7 +119,12 @@ const styles = StyleSheet.create({
         marginBottom: 48,
         marginHorizontal: 30
     },
-    InputTitle: {
+    inputTitle: {
+        color: "#8A8F9E",
+        fontSize: 10,
+        textTransform: "uppercase"
+    },
+    input: {
         borderBottomColor: "#8A8F9E",
         borderBottomWidth: StyleSheet.hairlineWidth,
         height: 40,
@@ -183,4 +159,4 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     }
-});
+})
